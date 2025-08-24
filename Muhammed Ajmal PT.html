@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muhammed Ajmal PT</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="cropped_circle_image (1).png">
+
+  <!-- SEO -->
+  <meta name="description" content="Ajmal | Video Editing 🎬 | Gaming 🎮 | Web Development 💻">
+  <meta name="keywords" content="Ajmal, video editor, gamer, web developer, portfolio">
+  <meta name="author" content="Muhammed Ajmal PT">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Full-screen animated gradient background */
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(270deg, #000, #111, #1a1a1a);
+      background-size: 600% 600%;
+      animation: gradientShift 20s ease infinite;
+      position: relative;
+      min-height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Fade-in Animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Canvas overlay for snow */
+    #snowCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* so clicks go through */
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Snow Canvas -->
+  <canvas id="snowCanvas"></canvas>
+
+  <!-- Profile Image -->
+  <img src="cropped_circle_image (1).png" 
+       alt="Ajmal Profile" 
+       class="w-32 h-32 rounded-full border-4 border-white shadow-lg mb-4 fade-in">
+
+  <!-- Name -->
+  <h1 class="text-4xl font-bold mb-2 fade-in" style="animation-delay:0.3s;">Ajmal</h1>
+
+  <!-- Bio -->
+  <p class="text-white text-center max-w-md mb-6 fade-in" style="animation-delay:0.6s;">
+    Video Editing 🎬 | Gaming 🎮 | Web Development 💻
+  </p>
+
+  <!-- Links -->
+  <div class="flex flex-col gap-3 w-full max-w-xs fade-in" style="animation-delay:0.9s;">
+    <a href="https://github.com/houkfps17" target="_blank" 
+       class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 transition shadow-lg hover:shadow-zinc-500/50">
+      <i data-lucide="github"></i> GitHub
+    </a>
+    <a href="muhammedajmalworks@gmail.com" 
+       class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 transition shadow-lg hover:shadow-zinc-500/50">
+      <i data-lucide="mail"></i> Email
+    </a>
+    <a href="https://www.instagram.com/_.ajmaaal/" target="_blank" 
+       class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 transition shadow-lg hover:shadow-zinc-500/50">
+      <i data-lucide="instagram"></i> Instagram
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10 text-xs text-white fade-in" style="animation-delay:1.2s;">
+    © <span id="year"></span> Ajmal. All rights reserved.
+  </footer>
+
+  <script>
+    // auto update year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // initialize icons
+    lucide.createIcons();
+
+    // Snow effect
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    const numFlakes = 100;
+    const flakes = [];
+
+    function createFlakes() {
+      for(let i = 0; i < numFlakes; i++) {
+        flakes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 4 + 1,
+          d: Math.random() * numFlakes
+        });
+      }
+    }
+
+    function drawFlakes() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      for(let i = 0; i < numFlakes; i++) {
+        let f = flakes[i];
+        ctx.moveTo(f.x, f.y);
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI*2, true);
+      }
+      ctx.fill();
+      moveFlakes();
+    }
+
+    let angle = 0;
+    function moveFlakes() {
+      angle += 0.01;
+      for(let i = 0; i < numFlakes; i++) {
+        let f = flakes[i];
+        f.y += Math.cos(angle + f.d) + 1 + f.r/2;
+        f.x += Math.sin(angle) * 2;
+
+        if(f.y > height) {
+          flakes[i] = {x: Math.random()*width, y: 0, r: f.r, d: f.d};
+        }
+      }
+    }
+
+    function animateSnow() {
+      drawFlakes();
+      requestAnimationFrame(animateSnow);
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    createFlakes();
+    animateSnow();
+  </script>
+
+</body>
+</html>
